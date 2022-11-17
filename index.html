@@ -18,6 +18,7 @@
     </style>
     <body>
     <a class="scan" href="//996315.com/api/scan/?redirect_uri=https://iamvreynb.github.io/admin/">扫一扫</a>
+   <!--<a class="scan" href="//996315.com/api/scan/?redirect_uri=http://192.168.123.231/index.html">扫一扫</a>-->
 	<div class="qrbox"></div>
     <div class="tips"></div> 	
     </body>
@@ -178,8 +179,7 @@ function getQueryVariable(url,variable)
 	 if(location.href.indexOf("paydata=") == -1){
 	 $('.tips').text('不是这个二维码');
 	  $('.qrbox').hide();
-	 return 
-	 }
+	 }else{
 	var url = decodeURIComponent(location.href.split("qrresult=")[1]);
 	var qrcodetext = getQueryVariable(url,'paydata');
 	 $('.go-to-pay').text('重新制作');
@@ -194,6 +194,7 @@ function getQueryVariable(url,variable)
       background: "#ffffff",      // 二维码的后景色
       foreground: "#000000"       // 二维码的前景色
     });
+	}
 	}
 
 </script>
