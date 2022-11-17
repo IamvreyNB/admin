@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>scan</title>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.slim.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/html5-qrcode/2.3.0/html5-qrcode.min.js"></script>
     <style>
         button {
@@ -39,95 +40,22 @@
 </head>
 
 <body>
-    <!-- 相机、文件方式同时只能使用一个,可根据自己需求修改,如:1.改成下拉框;2.改成tab;3.改成radio等等控制显示隐藏和相应逻辑 -->
-    <button onclick="useCamera()">使用相机扫一扫方式</button>
-    <div id="reader"></div>
-    <h3 id="qr-reader-results"></h3>
-    <script>
+<div id="reader"></div>
+<script>
 
-        var resultContainer = document.getElementById('qr-reader-results');
-        var lastResult, countResults = 0;
+$('#reader').html5_qrcode(function(data){
+ 		 // do something when code is read
+ 		 alert(data);
+ 	},
+ 	function(error){
+		//show read errors 
+		alert(error);
+	}, function(videoError){
+		//the video stream could be opened
+		alert(videoError);
+	}
+);
 
-         function onScanSuccess(decodedText, decodedResult) {
-             if (decodedText !== lastResult) {
-                 ++countResults;
-                 lastResult = decodedText;
-                 document.getElementById('qr-reader-results').innerText = lastResult;
-                 // Handle on success condition with the decoded message.
-                 console.log(`Scan result ${decodedText}`, decodedResult);
-             }
-         }
-
-         var html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 300 });
-         html5QrcodeScanner.render(onScanSuccess);
-         var resultContainer = document.getElementById('qr-reader-results');
-         var lastResult, countResults = 0;
-
-
-
-
-       //相机授权
-        function useCamera() {
-            reader.style.display = "block";
-            res.innerText = "";
-            Html5Qrcode.getCameras()
-                .then((devices) => {
-                    if (devices && devices.length) {
-                        let cameraId = "";
-                        if (devices.length == 1) {
-                            cameraId = devices[0].id; //前置摄像头
-                        } else {
-                            cameraId = devices[1].id;  //后置摄像头
-                        }
-                        if (cameraId) {
-                            startWithCameraId(cameraId);
-                        }
-                    } else {
-                        startWithoutCameraId();
-                    }
-                })
-                .catch((err) => {
-                    console.log("没有获取摄像头设备...");
-                });
-        }
-
-        //带相机ID扫描
-        function startWithCameraId(cameraId) {
-            html5QrCode
-                .start(
-                    { deviceId: { exact: cameraId } },
-                    config,
-                    onScanSuccess,
-                    onScanFailure
-                )
-                .catch((err) => {
-                    console.log("通过摄像头扫码异常....", err);
-                });
-        }
-
-        //不带相机ID扫描,允许传递约束来代替相机设备 ID
-        function startWithoutCameraId() {
-            //environment 表示后置摄像头  换成user则表示前置摄像头
-            html5QrCode.start(
-                { facingMode: "environment" } || {
-                    facingMode: { exact: "environment" },
-                },
-                config,
-                onScanSuccess,
-                onScanFailure
-            );
-        }
-
-        //扫码解析成功后按照自己的需求做后续的操作
-        function onScanSuccess(decodedText, decodedResult) {
-            res.innerText = "扫码成功结果:\n" + decodedText;
-        }
-
-        //扫码解析失败后按照自己的需求做后续的操作
-        function onScanFailure(error) {
-            res.innerText = "扫码失败:\n" + error;
-        }
-    </script>
 
 </body>
 
