@@ -175,12 +175,17 @@ function getQueryVariable(url,variable)
     return(false);
 }
     if (location.href.indexOf("qrresult=")>-1){
+	 if(location.href.indexOf("paydata=") == -1){
+	 $('.tips').text('不是这个二维码');
+	  $('.qrbox').hide();
+	 return 
+	 }
 	var url = decodeURIComponent(location.href.split("qrresult=")[1]);
 	var qrcodetext = getQueryVariable(url,'paydata');
 	 $('.go-to-pay').text('重新制作');
 	 var time = new Date();
 	 $('.tips').text('制作时间' + timestampToTime(time.toLocaleString('en-US',{hour12: false}).split(" ")));
-	
+	$('.qrbox').show();
      $('.qrbox').qrcode({
 	  render: "canvas",
       text: 'https://iamvreynb.github.io/?data=' + qrcodetext,
